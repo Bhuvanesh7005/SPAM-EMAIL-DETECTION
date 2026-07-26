@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Check Message{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Spam Message Detector</h1>
+    <p class="subtitle">Paste any SMS or email text below to check if it's spam — powered by a TF-IDF + Naive Bayes model.</p>
+
+    <textarea id="message-input" rows="6" placeholder="e.g. Congratulations! You've won a free iPhone, click here to claim..."></textarea>
+    <button id="check-btn">Check Message</button>
+
+    <div id="result" class="result hidden">
+        <div id="result-label" class="result-label"></div>
+        <div class="confidence-bar-wrap">
+            <div id="confidence-bar" class="confidence-bar"></div>
+        </div>
+        <p id="confidence-text" class="confidence-text"></p>
+    </div>
+
+    <div class="examples">
+        <p class="examples-title">Try an example:</p>
+        <button class="example-chip" data-text="Congratulations! You've won a $1000 gift card. Claim now at bit.ly/claim-now">Prize scam</button>
+        <button class="example-chip" data-text="Hey, are we still meeting for lunch at 3 PM tomorrow?">Normal message</button>
+        <button class="example-chip" data-text="URGENT: Your account will be suspended. Verify immediately at secure-verify.net">Phishing alert</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

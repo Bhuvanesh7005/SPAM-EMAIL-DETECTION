@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Prediction History</h1>
+
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="stat-num">{{ stats.total }}</div>
+            <div class="stat-label">Total Checked</div>
+        </div>
+        <div class="stat-box spam">
+            <div class="stat-num">{{ stats.spam }}</div>
+            <div class="stat-label">Spam</div>
+        </div>
+        <div class="stat-box ham">
+            <div class="stat-num">{{ stats.ham }}</div>
+            <div class="stat-label">Not Spam</div>
+        </div>
+    </div>
+
+    {% if records %}
+    <button id="clear-btn" class="clear-btn">Clear History</button>
+    <table class="history-table">
+        <thead>
+            <tr><th>Message</th><th>Prediction</th><th>Confidence</th><th>Checked At</th></tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td class="msg-cell">{{ r.message }}</td>
+                <td><span class="badge {{ r.prediction }}">{{ r.prediction }}</span></td>
+                <td>{{ r.confidence }}%</td>
+                <td>{{ r.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No messages checked yet. <a href="/">Check one now</a>.</p>
+    {% endif %}
+</div>
+
+<script>
+document.getElementById('clear-btn')?.addEventListener('click', async () => {
+    if (!confirm('Clear all prediction history?')) return;
+    await fetch('/api/clear-history', { method: 'POST' });
+    location.reload();
+});
+</script>
+{% endblock %}
